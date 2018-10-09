@@ -31,6 +31,22 @@ function sendError(res, next, errorObj){
   next(error);
 }
 
+function sendUserToken(res, next, user) {
+  const jwtPayload = {
+    _id: user._id,
+    username: user.username,
+  };
+
+  jwt.sign(jwtPayload, process.env.TOKEN_SECRET, { expiresIn: '1d' },
+  (error, token) => {
+    if (error) {
+      sendError(res, next, loginError);
+    } else {
+      res.json({ token });
+    }
+  });
+};
+
 router.post("/signup", (req, res, next) => {
     console.log('body', req.body);
     const result = Joi.validate(req.body, schema);
@@ -53,7 +69,7 @@ router.post("/signup", (req, res, next) => {
                     };
                     users.insert(newUser).then(insertedUser =>{
                         delete insertedUser.password;
-                        res.json(insertedUser);
+                        sendUserToken(res, next, insertedUser);
                     })
                 })
             }
@@ -78,18 +94,7 @@ router.post("/login", (req, res, next) => {
       if(user){
         bcrypt.compare(req.body.password, user.password).then((match) => {
           if(match === true){
-            const jwtPayload = {
-              _id: user._id,
-              username: user.username,
-            };
-            jwt.sign(jwtPayload, process.env.TOKEN_SECRET, {expiresIn: '1d'},
-              (error, token) => {
-                if(error){
-                  sendError(res, next, loginError);
-                } else {
-                  res.json({token});
-                }
-              });
+            sendUserToken(res, next, user);
           } else {
             sendError(res, next, loginError);
           }
