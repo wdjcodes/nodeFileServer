@@ -40,7 +40,11 @@ function sendUserToken(res, next, user) {
   jwt.sign(jwtPayload, process.env.TOKEN_SECRET, { expiresIn: '1d' },
   (error, token) => {
     if (error) {
-      sendError(res, next, loginError);
+      const jwtError = {
+        msg: error,
+        status: 501,
+      };
+      sendError(res, next, jwtError);
     } else {
       res.json({ token });
     }
@@ -81,8 +85,6 @@ router.post("/signup", (req, res, next) => {
       };
       sendError(res, next, signupError);
     }
-
-    //res.json(result);
 });
 
 router.post("/login", (req, res, next) => {
