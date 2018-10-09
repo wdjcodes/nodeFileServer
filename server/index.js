@@ -8,6 +8,8 @@ const app = express();
 const mw = require('./auth/middlewares');
 
 const auth = require('./auth');
+const notes = require('./api/notes');
+
 app.use(volleyball);
 app.use(cors({
   origin: 'http://localhost:8080',
@@ -24,6 +26,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/auth', auth);
+app.use('/api/v1/notes', mw.isLoggedIn, notes);
 
 function notFound(req, res, next) {
   res.status(404);
