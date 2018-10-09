@@ -41,7 +41,8 @@
                         type="password" required>
                     <small id="passwordHelp" class="form-text text-muted">
                         Passwords must be at least 8 characters long <br>
-                        Passwords must include upper and lowercase letters, numbers, and special characters. <br>
+                        Passwords must include upper and lowercase letters,
+                         numbers, and special characters. <br>
                         Valid special characters: !#@$%&?*</small>
                     </div>
                     <div class="form-group col-md-6">
@@ -64,36 +65,37 @@
 </template>
 
 <script>
-const Joi = require("joi");
+const Joi = require('joi');
 
-const SIGNUP_URL = "http://localhost:5000/auth/signup";
+const SIGNUP_URL = 'http://localhost:5000/auth/signup';
 
 const schema = Joi.object().keys({
-  username: Joi.string().regex(/^[a-zA-Z0-9\_\.\-]*$/).min(2).max(30).required(),
+  username: Joi.string().regex(/^[a-zA-Z0-9_.-]*$/).min(2).max(30)
+    .required(),
   password: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#@$%&?*])[a-zA-Z0-9!#@$%&?*]{8,30}$/).required(),
-  confirmPassword: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#@$%&?*])[a-zA-Z0-9!#@$%&?*]{8,30}$/).required()
+  confirmPassword: Joi.string().regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[!#@$%&?*])[a-zA-Z0-9!#@$%&?*]{8,30}$/).required(),
 });
 const JoiOptions = {
-  abortEarly: false
+  abortEarly: false,
 };
 
 export default {
   data: () => ({
     user: {
-      username: "",
-      password: "",
-      confirmPassword: ""
+      username: '',
+      password: '',
+      confirmPassword: '',
     },
     waiting: false,
-    errorMessage: ""
+    errorMessage: '',
   }),
   watch: {
     user: {
       handler() {
-        this.errorMessage = "";
+        this.errorMessage = '';
       },
-      deep: true
-    }
+      deep: true,
+    },
   },
   methods: {
     signup() {
@@ -101,29 +103,29 @@ export default {
       if (this.validUser()) {
         const body = {
           username: this.user.username,
-          password: this.user.password
+          password: this.user.password,
         };
         this.waiting = true;
         fetch(SIGNUP_URL, {
-          method: "POST",
+          method: 'POST',
           body: JSON.stringify(body),
           headers: {
-            "content-type": "application/json"
-          }
+            'content-type': 'application/json',
+          },
         })
-        .then((resp) => {
+          .then((resp) => {
             if (resp.ok) {
               return resp.json();
             }
             return resp.json().then((error) => {
-              console.log(error.message);
               throw new Error(error.message);
             });
           })
-          .then((user) => {
+          .then((result) => {
+            localStorage.token = result.token;
             setTimeout(() => {
               this.waiting = false;
-              this.$router.push('/login');
+              this.$router.push('/dashboard');
             }, 1000);
           })
           .catch((error) => {
@@ -145,7 +147,6 @@ export default {
       }
       result.error.details.forEach((element) => {
         const key = element.path[0];
-        // console.log(key, '\n');
         if (key === 'username') {
           this.errorMessage += '🙊 Invalid Username 🙊 ';
         }
@@ -153,7 +154,6 @@ export default {
           this.errorMessage += '🙈 Invalid Password 🙈 ';
         }
       });
-      // console.log(result.error.details);
       return false;
     },
   },
