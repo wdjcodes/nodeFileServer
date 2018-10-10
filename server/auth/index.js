@@ -2,7 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const db = require('../db/connection');
-const jwt = require('jsonwebtoken');
+const httpUtils = require('../httpUtils');
 
 const users = db.get('users');
 users.createIndex('username', { unique: true });
@@ -25,32 +25,6 @@ router.get("/", (req, res) => {
     });
 });
 
-function sendError(res, next, errorObj){
-  res.status(errorObj.status);
-  const error = new Error(errorObj.msg);
-  next(error);
-}
-
-function sendUserToken(res, next, user) {
-  const jwtPayload = {
-    _id: user._id,
-    username: user.username,
-  };
-
-  jwt.sign(jwtPayload, process.env.TOKEN_SECRET, { expiresIn: '1d' },
-  (error, token) => {
-    if (error) {
-      const jwtError = {
-        msg: error,
-        status: 501,
-      };
-      sendError(res, next, jwtError);
-    } else {
-      res.json({ token });
-    }
-  });
-};
-
 router.post("/signup", (req, res, next) => {
     console.log('body', req.body);
     const result = Joi.validate(req.body, schema);
@@ -64,7 +38,7 @@ router.post("/signup", (req, res, next) => {
                 msg: '🙉 Username is taken 🙉',
                 status: 409,
               }
-              sendError(res, next, signupError);
+              httpUtils.sendError(res, next, signupError);
             } else {
                 bcrypt.hash(req.body.password.trim(), 12).then(hashedPass =>{
                     const newUser = {
@@ -73,7 +47,7 @@ router.post("/signup", (req, res, next) => {
                     };
                     users.insert(newUser).then(insertedUser =>{
                         delete insertedUser.password;
-                        sendUserToken(res, next, insertedUser);
+                        httpUtils.sendUserToken(res, next, insertedUser);
                     })
                 })
             }
@@ -83,7 +57,7 @@ router.post("/signup", (req, res, next) => {
         msg: result.error,
         status: 422,
       };
-      sendError(res, next, signupError);
+      httpUtils.sendError(res, next, signupError);
     }
 });
 
@@ -96,17 +70,17 @@ router.post("/login", (req, res, next) => {
       if(user){
         bcrypt.compare(req.body.password, user.password).then((match) => {
           if(match === true){
-            sendUserToken(res, next, user);
+            httpUtils.sendUserToken(res, next, user);
           } else {
-            sendError(res, next, loginError);
+            httpUtils.sendError(res, next, loginError);
           }
         })
       } else {
-        sendError(res, next, loginError);
+        httpUtils.sendError(res, next, loginError);
       }
     })
   } else {
-    sendError(res, next, loginError);
+    httpUtils.sendError(res, next, loginError);
   }
 })
 

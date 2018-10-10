@@ -79,7 +79,20 @@ export default {
       this.$router.push('/login');
     },
     addNote() {
-      console.log(this.newNote);
+      fetch(`${API_URL}api/v1/notes`, {
+        method: 'POST',
+        body: JSON.stringify(this.newNote),
+        headers: {
+          'content-type': 'application/json',
+          authorization: 'Bearer ' + localStorage.token,
+        },
+      }).then(res => res.json())
+        .then((note) => {
+          console.log(note);
+          this.newNote.title = '';
+          this.newNote.note = '';
+          this.showForm = false;
+        });
     },
   },
 };
