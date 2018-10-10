@@ -33,6 +33,8 @@
 </template>
 
 <script>
+import EventBus from '../eventbus';
+
 const API_URL = 'http://localhost:5000/';
 
 export default {
@@ -44,30 +46,42 @@ export default {
     },
     showForm: false,
   }),
-  mounted(){
-    fetch(API_URL, {
-      headers: {
-        authorization: 'Bearer ' + localStorage.token,
-      }
-    }).then(res => res.json())
-    .then((result => {
-      if(result.user){
-        this.user = result.user;
-      } else {
-        this.logout();
-      }
-      console.log(result);
+  created() {
+    EventBus.$on('loggedIn', (loggedIn) => {
+      this.loggedIn = loggedIn;
+    });
+    EventBus.$on('user', ((user) => {
+      this.user = user;
     }));
   },
+  mounted() {
+    if (!this.loggedIn) {
+      this.$router.push('/login');
+    }
+  },
+  // mounted(){
+  //   fetch(API_URL, {
+  //     headers: {
+  //       authorization: 'Bearer ' + localStorage.token,
+  //     }
+  //   }).then(res => res.json())
+  //   .then((result) => {
+  //     if(result.user){
+  //       this.user = result.user;
+  //     } else {
+  //       this.logout();
+  //     }
+  //   });
+  // },
   methods: {
-    logout(){
+    logout() {
       localStorage.removeItem('token');
       this.$router.push('/login');
     },
-    addNote(){
+    addNote() {
       console.log(this.newNote);
-    }
-  }
+    },
+  },
 };
 </script>
 
