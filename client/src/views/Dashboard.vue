@@ -29,11 +29,31 @@
       </div>
       <button type="submit" class="btn btn-primary btn-lg">Submit</button>
     </form>
+    <section class="row mt-3">
+      <div
+        class="col-4 mb-3 pr-0 pl-3"
+        v-for="note in notes"
+        :key="note._id">
+        <div
+          class="card border-primary mb-3"
+          >
+          <div class="card-header"><h4>{{note.title}}</h4></div>
+          <div class="card-body">
+            <p class="card-text" v-html="renderMarkDown(note.note)"></p>
+        </div>
+      </div>
+      </div>
+    </section>
   </section>
 </template>
 
 <script>
 import EventBus from '../eventbus';
+import markDown from 'markdown-it';
+import mdEmoji from 'markdown-it-emoji';
+
+const md = new markDown();
+md.use(mdEmoji);
 
 const API_URL = 'http://localhost:5000/';
 
@@ -45,6 +65,7 @@ export default {
       note: '',
     },
     showForm: false,
+    notes: [],
   }),
   created() {
     EventBus.$on('loggedIn', (loggedIn) => {
@@ -58,21 +79,8 @@ export default {
     if (!this.loggedIn) {
       this.$router.push('/login');
     }
+    this.getNotes();
   },
-  // mounted(){
-  //   fetch(API_URL, {
-  //     headers: {
-  //       authorization: 'Bearer ' + localStorage.token,
-  //     }
-  //   }).then(res => res.json())
-  //   .then((result) => {
-  //     if(result.user){
-  //       this.user = result.user;
-  //     } else {
-  //       this.logout();
-  //     }
-  //   });
-  // },
   methods: {
     logout() {
       localStorage.removeItem('token');
@@ -84,7 +92,7 @@ export default {
         body: JSON.stringify(this.newNote),
         headers: {
           'content-type': 'application/json',
-          authorization: 'Bearer ' + localStorage.token,
+          authorization: `Bearer ${localStorage.token}`,
         },
       }).then(res => res.json())
         .then((note) => {
@@ -92,12 +100,32 @@ export default {
           this.newNote.title = '';
           this.newNote.note = '';
           this.showForm = false;
+          this.getNotes();
         });
+    },
+    getNotes() {
+      fetch(`${API_URL}api/v1/notes`, {
+        headers: {
+          authorization: `Bearer ${localStorage.token}`,
+        },
+      }).then((res => res.json()))
+        .then((notes) => {
+          console.log(notes);
+          this.notes = notes;
+        });
+    },
+    renderMarkDown(note) {
+      return md.render(note);
     },
   },
 };
 </script>
 
 <style>
-
+.card {
+  height: 100%;
+}
+.card-text img {
+  width: 100%;
+}
 </style>
