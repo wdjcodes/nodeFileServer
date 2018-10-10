@@ -40,8 +40,11 @@
           <div class="card-header"><h4>{{note.title}}</h4></div>
           <div class="card-body">
             <p class="card-text" v-html="renderMarkDown(note.note)"></p>
+          </div>
+          <div class="footer mr-2 mb-1 text-muted text-right">
+            {{readableTime(note.create_time)}}
+          </div>
         </div>
-      </div>
       </div>
     </section>
   </section>
@@ -117,6 +120,10 @@ export default {
     renderMarkDown(note) {
       return md.render(note);
     },
+    readableTime(time){
+      const d = new Date(time);
+      return d.toLocaleString();
+    }
   },
 };
 </script>

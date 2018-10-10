@@ -19,7 +19,17 @@ router.get("/", (req, res) => {
   };
   notes.find(noteTemp)
     .then((notes) => {
-      console.log('Notes: ', notes);
+      notes.sort((a, b) => {
+        const keyA = a.create_time;
+        const keyB = b.create_time;
+        if(keyA < keyB) {
+          return 1;
+        }
+        if(keyA > keyB) {
+          return -1;
+        }
+        return 0;
+      });
       res.json(notes);
     });
 });
@@ -31,6 +41,7 @@ router.post('/', (req, res, next) => {
     const note = {
       ...req.body,
       user_id: req.user._id,
+      create_time: Date.now(),
     };
     notes.insert(note).then((note) => {
       res.json(note);
