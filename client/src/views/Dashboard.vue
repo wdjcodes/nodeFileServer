@@ -5,30 +5,7 @@
     <button @click="logout" class="btn btn-primary">Logout</button>
     <button v-if="!showForm" @click="showForm = !showForm" class="btn btn-primary">Show Form</button>
     <button v-if="showForm" @click="showForm = ! showForm" class="btn btn-secondary">Hide Form</button>
-    <form v-if="showForm" @submit.prevent="addNote()">
-      <div class="form-group">
-        <label for="title">Title</label>
-        <input
-        v-model="newNote.title"
-        type="text"
-        class="form-control"
-        id="title"
-        aria-describedby="titleHelp"
-        placeholder="Enter title" required>
-        <small id="titlelHelp" class="form-text text-muted">Eneter a descriptive title for your note.</small>
-      </div>
-      <div class="form-group">
-        <label for="noteText">Note</label>
-        <textarea
-          v-model="newNote.note"
-          class="form-control"
-          id="noteText"
-          rows="3"
-          placeholder="Type your note..." required
-        ></textarea>
-      </div>
-      <button type="submit" class="btn btn-primary btn-lg">Submit</button>
-    </form>
+    <NoteForm v-if="showForm"></NoteForm>
     <section class="row mt-3">
       <div
         class="col-4 mb-3 pr-0 pl-3"
@@ -53,6 +30,13 @@
                   aria-labelledby="noteOptions"
                   x-placement="bottom-start"
                   style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                  <button
+                    type="button"
+                    class="dropdown-item"
+                    data-toggle="modal"
+                    data-target="#exampleModal">
+                    Edit Note
+                  </button>
                   <a class="dropdown-item" href="#/">Dropdown link</a>
                   <a class="dropdown-item" href="#">Dropdown link</a>
                 </div>
@@ -73,6 +57,7 @@
 
 <script>
 import EventBus from '../eventbus';
+import NoteForm from '../components/dashboard/notes/Form.vue';
 import markDown from 'markdown-it';
 import mdEmoji from 'markdown-it-emoji';
 
@@ -82,6 +67,9 @@ md.use(mdEmoji);
 const API_URL = 'http://localhost:5000/';
 
 export default {
+  components: {
+    NoteForm,
+  },
   data: () => ({
     user: {},
     newNote: {
@@ -98,6 +86,10 @@ export default {
     EventBus.$on('user', ((user) => {
       this.user = user;
     }));
+    EventBus.$on('noteSubmitted', () => {
+      this.showForm = false;
+      this.getNotes();
+    });
   },
   mounted() {
     if (!this.loggedIn) {
@@ -109,23 +101,6 @@ export default {
     logout() {
       localStorage.removeItem('token');
       this.$router.push('/login');
-    },
-    addNote() {
-      fetch(`${API_URL}api/v1/notes`, {
-        method: 'POST',
-        body: JSON.stringify(this.newNote),
-        headers: {
-          'content-type': 'application/json',
-          authorization: `Bearer ${localStorage.token}`,
-        },
-      }).then(res => res.json())
-        .then((note) => {
-          console.log(note);
-          this.newNote.title = '';
-          this.newNote.note = '';
-          this.showForm = false;
-          this.getNotes();
-        });
     },
     getNotes() {
       fetch(`${API_URL}api/v1/notes`, {
