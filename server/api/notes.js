@@ -55,4 +55,63 @@ router.post('/', (req, res, next) => {
   }
 });
 
+router.post('/manage', (req, res, next) => {
+  const localSchema = Joi.object().keys({
+    title: Joi.string().min(1).max(100).required(),
+    note: Joi.string().min(1).max(500).required(),
+    _id: Joi.string().alphanum(),
+    user_id: Joi.string().alphanum(),
+    create_time: Joi.number().greater(0),
+  });
+  console.log(req.body);
+  if(!req.body.action || !req.body.note ||
+    !req.body.note._id || !req.body.note.user_id){
+
+    httpUtils.sendError(res, next, {
+      msg: 'Malformed request',
+      status: 400,
+    });
+    return;
+  }
+
+  const action = req.body.action;
+  const note = req.body.note;
+  const result = Joi.validate(note, localSchema);
+  if(note.user_id !== req.user._id){
+    httpUtils.sendError(res, next, {
+      msg: 'Unathorized',
+      status: 401,
+    });
+    return;
+  }
+
+  if(result.error !== null){
+    httpUtils.sendError(res, next, {
+      msg: result.error,
+      status: 422,
+    });
+    return;
+  }
+
+  notes.findOne(note).then((note) => {
+    if(!note){
+      httpUtils.sendError(res, next, {
+        msg: 'Note not found',
+        status: 410,
+      })
+      return;
+    }
+    if(action === 'delete'){
+      res.json({status: 'Server deleting'});
+    } else {
+      httpUtils.sendError(res, next, {
+        msg: 'Unrecognized Action',
+        status: 400,
+      })
+    }
+  });
+  console.log(dbNote);
+  res.json({status: 'OK'});
+})
+
 module.exports = router;

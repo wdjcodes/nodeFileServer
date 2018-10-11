@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import EventBus from '../../../eventbus';
+import EventBus from '@/eventbus';
 
 const API_URL = 'http://localhost:5000/';
 
@@ -51,7 +51,7 @@ export default {
           console.log(note);
           this.newNote.title = '';
           this.newNote.note = '';
-          EventBus.$emit('noteSubmitted');
+          EventBus.$emit('notesUpdate');
         });
     },
   },

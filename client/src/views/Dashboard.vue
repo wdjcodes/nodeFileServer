@@ -11,45 +11,7 @@
         class="col-4 mb-3 pr-0 pl-3"
         v-for="note in notes"
         :key="note._id">
-        <div
-          class="card border-primary mb-3">
-          <div class="card-header">
-            <div class="row">
-              <h4 class="col-10">{{note.title}}</h4>
-              <div class="col-1 dropdown btn-group" role="group">
-                <button
-                  id="noteOptions"
-                  type="button"
-                  class="btn btn-outline-primary dropdown-toggle card-btn-toggle"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false">
-                </button>
-                <div
-                  class="dropdown-menu"
-                  aria-labelledby="noteOptions"
-                  x-placement="bottom-start"
-                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
-                  <button
-                    type="button"
-                    class="dropdown-item"
-                    data-toggle="modal"
-                    data-target="#exampleModal">
-                    Edit Note
-                  </button>
-                  <a class="dropdown-item" href="#/">Dropdown link</a>
-                  <a class="dropdown-item" href="#">Dropdown link</a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="card-body">
-            <p class="card-text" v-html="renderMarkDown(note.note)"></p>
-          </div>
-          <div class="footer mr-2 mb-1 text-muted text-right">
-            {{readableTime(note.create_time)}}
-          </div>
-        </div>
+        <NoteCard :note="note"></NoteCard>
       </div>
     </section>
   </section>
@@ -58,17 +20,14 @@
 <script>
 import EventBus from '../eventbus';
 import NoteForm from '../components/dashboard/notes/Form.vue';
-import markDown from 'markdown-it';
-import mdEmoji from 'markdown-it-emoji';
-
-const md = new markDown();
-md.use(mdEmoji);
+import NoteCard from '../components/dashboard/notes/NoteCard.vue';
 
 const API_URL = 'http://localhost:5000/';
 
 export default {
   components: {
     NoteForm,
+    NoteCard,
   },
   data: () => ({
     user: {},
@@ -86,7 +45,7 @@ export default {
     EventBus.$on('user', ((user) => {
       this.user = user;
     }));
-    EventBus.$on('noteSubmitted', () => {
+    EventBus.$on('notesUpdate', () => {
       this.showForm = false;
       this.getNotes();
     });
@@ -109,17 +68,9 @@ export default {
         },
       }).then((res => res.json()))
         .then((notes) => {
-          console.log(notes);
           this.notes = notes;
         });
     },
-    renderMarkDown(note) {
-      return md.render(note);
-    },
-    readableTime(time){
-      const d = new Date(time);
-      return d.toLocaleString();
-    }
   },
 };
 </script>
