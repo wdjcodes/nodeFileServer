@@ -35,9 +35,26 @@
         v-for="note in notes"
         :key="note._id">
         <div
-          class="card border-primary mb-3"
-          >
-          <div class="card-header"><h4>{{note.title}}</h4></div>
+          class="card border-primary mb-3">
+          <div class="card-header">
+            <div class="row">
+              <h4 class="col-10">{{note.title}}</h4>
+              <div class="col-1 dropdown btn-group">
+                <button 
+                  id="noteOptions" 
+                  type="button" 
+                  class="btn btn-outline-primary dropdown-toggle card-btn-toggle"
+                  data-toggle="dropdown" 
+                  aria-haspopup="true" 
+                  aria-expanded="false">
+                </button>
+                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                  <a class="dropdown-item" href="#">Dropdown link</a>
+                </div>
+              </div>
+            </div>
+          </div>
           <div class="card-body">
             <p class="card-text" v-html="renderMarkDown(note.note)"></p>
           </div>
@@ -135,4 +152,25 @@ export default {
 .card-text img {
   width: 100%;
 }
+.card-btn-toggle {
+  height: 35px;
+  vertical-align: top;
+}
+/* .btn .btn-outline-primary .dropdown-toggle{
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-family: 'Glyphicons Halflings';
+}
+.custom-caret {
+  font-family: 'Glyphicons Halflings';
+  content: "\f107";
+} */
+
+/* .bootstrap-select.btn-group .dropdown-toggle .caret {
+  width: 100%;
+  height: 100%;
+  border: none;
+  font-family: 'Glyphicons Halflings';
+} */
 </style>
