@@ -39,17 +39,21 @@
           <div class="card-header">
             <div class="row">
               <h4 class="col-10">{{note.title}}</h4>
-              <div class="col-1 dropdown btn-group">
-                <button 
-                  id="noteOptions" 
-                  type="button" 
+              <div class="col-1 dropdown btn-group" role="group">
+                <button
+                  id="noteOptions"
+                  type="button"
                   class="btn btn-outline-primary dropdown-toggle card-btn-toggle"
-                  data-toggle="dropdown" 
-                  aria-haspopup="true" 
+                  data-toggle="dropdown"
+                  aria-haspopup="true"
                   aria-expanded="false">
                 </button>
-                <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                  <a class="dropdown-item" href="#">Dropdown link</a>
+                <div
+                  class="dropdown-menu"
+                  aria-labelledby="noteOptions"
+                  x-placement="bottom-start"
+                  style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+                  <a class="dropdown-item" href="#/">Dropdown link</a>
                   <a class="dropdown-item" href="#">Dropdown link</a>
                 </div>
               </div>
@@ -156,21 +160,4 @@ export default {
   height: 35px;
   vertical-align: top;
 }
-/* .btn .btn-outline-primary .dropdown-toggle{
-  width: 100%;
-  height: 100%;
-  border: none;
-  font-family: 'Glyphicons Halflings';
-}
-.custom-caret {
-  font-family: 'Glyphicons Halflings';
-  content: "\f107";
-} */
-
-/* .bootstrap-select.btn-group .dropdown-toggle .caret {
-  width: 100%;
-  height: 100%;
-  border: none;
-  font-family: 'Glyphicons Halflings';
-} */
 </style>
