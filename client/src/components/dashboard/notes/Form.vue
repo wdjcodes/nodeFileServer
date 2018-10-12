@@ -9,7 +9,11 @@
       id="title"
       aria-describedby="titleHelp"
       placeholder="Enter title" required>
-      <small id="titlelHelp" class="form-text text-muted">Eneter a descriptive title for your note.</small>
+      <small
+        id="titlelHelp"
+        class="form-text text-muted">
+        Eneter a descriptive title for your note.
+      </small>
     </div>
     <div class="form-group">
       <label for="noteText">Note</label>
@@ -48,7 +52,6 @@ export default {
         },
       }).then(res => res.json())
         .then((note) => {
-          console.log(note);
           this.newNote.title = '';
           this.newNote.note = '';
           EventBus.$emit('notesUpdate');

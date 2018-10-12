@@ -34,7 +34,6 @@
               data-target="#deleteModal">
               Delete Note
             </button>
-            <!-- <a class="dropdown-item" href="#">Dropdown link</a> -->
           </div>
         </div>
       </div>
@@ -65,13 +64,6 @@ export default {
       required: true,
     },
   },
-  data () {
-    return {
-      Note: {
-        ...this.note,
-      },
-    };
-  },
   methods: {
     renderMarkDown(note) {
       return md.render(note);
@@ -81,22 +73,20 @@ export default {
       return d.toLocaleString();
     },
     registerEvent(){
-      console.log('Registering Event ', this.Note._id);
       EventBus.$emit('launchDelete', this.note._id);
       EventBus.$once(this.note._id, (del) =>{
         if(del) {
           this.deleteNote();
+        } else {
         }
       });
     },
     deleteNote(){
-      console.log("Deleting Note");
       const note = this.note;
       const data = {
         action: 'delete',
         note: note,
       };
-      console.log(API_URL);
       fetch(`${API_URL}api/v1/notes/manage`, {
         method: 'POST',
         body: JSON.stringify(data),
@@ -106,7 +96,6 @@ export default {
         },
       }).then(res => res.json())
         .then((note) => {
-          console.log(note);
           EventBus.$emit('notesUpdate');
         });
     }

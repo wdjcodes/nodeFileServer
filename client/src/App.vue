@@ -48,17 +48,14 @@ export default {
     },
   },
   created() {
-    console.log('Create');
     this.isloggedIn();
   },
   mounted() {
     EventBus.$on('forceUpdate', () => {
-      console.log('Forced Update');
       this.isloggedIn();
     });
   },
   updated() {
-    console.log('Update');
     this.isloggedIn();
   },
   data: () => ({

@@ -1,6 +1,7 @@
 <template>
   <div
     class="modal fade"
+    ref="vuemodal"
     id="deleteModal"
     tabindex="-1"
     role="dialog"
@@ -20,7 +21,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <h6>{{deleteEvent}} Are you sure you want to delete this?</h6>
+          <h6>Are you sure you want to delete this?</h6>
         </div>
         <div class="modal-footer">
           <button
@@ -50,18 +51,18 @@ export default {
   data () {
     return {
       deleteEvent: '',
+      fired: false,
     };
   },
   methods: {
     deleteEntity(){
-      console.log("Delete Event ", this.deleteEvent);
       EventBus.$emit(this.deleteEvent, true);
+      this.fired = true;
       EventBus.$once('launchDelete', (returnEvent) => {
         this.deleteEvent = returnEvent;
       });
     },
     cancel(){
-      console.log("Cancel delete")
       EventBus.$emit(this.deleteEvent, false);
       EventBus.$once('launchDelete', (returnEvent) => {
         this.deleteEvent = returnEvent;
@@ -72,6 +73,16 @@ export default {
     EventBus.$once('launchDelete', (returnEvent) => {
       this.deleteEvent = returnEvent;
     });
+  },
+  mounted () {
+    $(this.$refs.vuemodal).on("hidden.bs.modal", () => {
+      if(!this.fired){
+        this.cancel
+      }
+    });
+  },
+  beforeDestroy () {
+    $(this.$refs.vuemodal).off("hidden.bs.modal");
   },
 }
 </script>

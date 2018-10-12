@@ -2,9 +2,18 @@
   <section>
     <h1>Dashboard</h1>
     <h1>Hello, {{user.username}}! 👋</h1>
-    <button @click="logout" class="btn btn-primary">Logout</button>
-    <button v-if="!showForm" @click="showForm = !showForm" class="btn btn-primary">Show Form</button>
-    <button v-if="showForm" @click="showForm = ! showForm" class="btn btn-secondary">Hide Form</button>
+    <button
+      v-if="!showForm"
+      @click="showForm = !showForm"
+      class="btn btn-primary">
+      Add Note
+    </button>
+    <button
+      v-if="showForm"
+      @click="showForm = !showForm"
+      class="btn btn-secondary">
+      Cancel
+    </button>
     <NoteForm v-if="showForm"></NoteForm>
     <section class="row mt-3">
       <div
@@ -75,7 +84,6 @@ export default {
         },
       }).then((res => res.json()))
         .then((notes) => {
-          console.log(notes);
           this.notes = notes;
         });
     },
