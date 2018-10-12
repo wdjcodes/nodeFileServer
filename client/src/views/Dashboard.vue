@@ -14,6 +14,9 @@
         <NoteCard :note="note"></NoteCard>
       </div>
     </section>
+    <!-- Modals -->
+    <EditNote></EditNote>
+    <DeleteModal></DeleteModal>
   </section>
 </template>
 
@@ -21,6 +24,8 @@
 import EventBus from '../eventbus';
 import NoteForm from '../components/dashboard/notes/Form.vue';
 import NoteCard from '../components/dashboard/notes/NoteCard.vue';
+import EditNote from '@/components/dashboard/notes/EditNote.vue';
+import DeleteModal from '@/components/DeleteModal.vue';
 
 const API_URL = 'http://localhost:5000/';
 
@@ -28,6 +33,8 @@ export default {
   components: {
     NoteForm,
     NoteCard,
+    EditNote,
+    DeleteModal,
   },
   data: () => ({
     user: {},
@@ -68,6 +75,7 @@ export default {
         },
       }).then((res => res.json()))
         .then((notes) => {
+          console.log(notes);
           this.notes = notes;
         });
     },

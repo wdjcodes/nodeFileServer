@@ -93,16 +93,27 @@ router.post('/manage', (req, res, next) => {
     return;
   }
 
-  notes.findOne(note).then((note) => {
-    if(!note){
+  notes.findOne(note).then((dbNote) => {
+    if(!dbNote){
       httpUtils.sendError(res, next, {
         msg: 'Note not found',
         status: 410,
-      })
+      });
       return;
     }
     if(action === 'delete'){
-      res.json({status: 'Server deleting'});
+      if(dbNote.user_id !== req.user._id){
+        httpUtils.sendError(res, next, {
+          msg: 'Unauthorized',
+          status: 401,
+        });
+        return;
+      }
+      notes.remove(dbNote);
+      res.json({
+        status: 'Deleted',
+        note_id: note._id,
+      });
     } else {
       httpUtils.sendError(res, next, {
         msg: 'Unrecognized Action',
@@ -110,8 +121,6 @@ router.post('/manage', (req, res, next) => {
       })
     }
   });
-  console.log(dbNote);
-  res.json({status: 'OK'});
 })
 
 module.exports = router;

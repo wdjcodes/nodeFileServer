@@ -20,7 +20,7 @@
           </button>
         </div>
         <div class="modal-body">
-          <h6>Are you sure you want to delete this?</h6>
+          <h6>{{deleteEvent}} Are you sure you want to delete this?</h6>
         </div>
         <div class="modal-footer">
           <button
@@ -47,20 +47,32 @@
 import EventBus from '@/eventbus.js';
 
 export default {
-  props: {
-    deleteEvent: {
-      type: String,
-      required: true,
-    },
+  data () {
+    return {
+      deleteEvent: '',
+    };
   },
   methods: {
     deleteEntity(){
+      console.log("Delete Event ", this.deleteEvent);
       EventBus.$emit(this.deleteEvent, true);
+      EventBus.$once('launchDelete', (returnEvent) => {
+        this.deleteEvent = returnEvent;
+      });
     },
     cancel(){
+      console.log("Cancel delete")
       EventBus.$emit(this.deleteEvent, false);
+      EventBus.$once('launchDelete', (returnEvent) => {
+        this.deleteEvent = returnEvent;
+      });
     }
-  }
+  },
+  created () {
+    EventBus.$once('launchDelete', (returnEvent) => {
+      this.deleteEvent = returnEvent;
+    });
+  },
 }
 </script>
 

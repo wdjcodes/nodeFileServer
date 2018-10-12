@@ -19,7 +19,7 @@
             x-placement="bottom-start"
             style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
             <button
-              @click="registerEvent(note)"
+              @click="registerEvent()"
               type="button"
               class="dropdown-item"
               data-toggle="modal"
@@ -27,7 +27,7 @@
               Edit Note
             </button>
             <button
-              @click="registerEvent(note)"
+              @click="registerEvent()"
               type="button"
               class="dropdown-item"
               data-toggle="modal"
@@ -45,17 +45,12 @@
     <div class="footer mr-2 mb-1 text-muted text-right">
       {{readableTime(note.create_time)}}
     </div>
-    <!-- Modals -->
-    <EditNote></EditNote>
-    <DeleteModal :deleteEvent="note._id"></DeleteModal>
   </div>
 </template>
 
 <script>
 import markDown from 'markdown-it';
 import mdEmoji from 'markdown-it-emoji';
-import EditNote from './EditNote.vue';
-import DeleteModal from '@/components/DeleteModal.vue';
 import EventBus from '../../../eventbus';
 
 const md = new markDown();
@@ -64,15 +59,18 @@ md.use(mdEmoji);
 const API_URL = 'http://localhost:5000/';
 
 export default {
-  components: {
-    EditNote,
-    DeleteModal,
-  },
   props: {
     note: {
       type: Object,
       required: true,
     },
+  },
+  data () {
+    return {
+      Note: {
+        ...this.note,
+      },
+    };
   },
   methods: {
     renderMarkDown(note) {
@@ -83,6 +81,8 @@ export default {
       return d.toLocaleString();
     },
     registerEvent(){
+      console.log('Registering Event ', this.Note._id);
+      EventBus.$emit('launchDelete', this.note._id);
       EventBus.$once(this.note._id, (del) =>{
         if(del) {
           this.deleteNote();
