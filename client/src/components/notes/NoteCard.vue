@@ -50,7 +50,7 @@
 <script>
 import markDown from 'markdown-it';
 import mdEmoji from 'markdown-it-emoji';
-import EventBus from '../../../eventbus';
+import EventBus from '@/eventbus';
 
 const md = new markDown();
 md.use(mdEmoji);
@@ -64,6 +64,7 @@ export default {
       required: true,
     },
   },
+  computed: {},
   methods: {
     renderMarkDown(note) {
       return md.render(note);

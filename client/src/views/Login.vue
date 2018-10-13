@@ -66,12 +66,13 @@ const JoiOptions = {
 export default {
   data: () => ({
     errorMessage: '',
-    user: {
-      username: '',
-      password: '',
-    },
+    // user: {
+    //   username: '',
+    //   password: '',
+    // },
     waiting: false,
   }),
+  computed: {},
   watch: {
     user: {
       handler() {

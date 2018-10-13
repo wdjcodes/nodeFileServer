@@ -81,14 +81,15 @@ const JoiOptions = {
 
 export default {
   data: () => ({
-    user: {
-      username: '',
-      password: '',
-      confirmPassword: '',
-    },
+    // user: {
+    //   username: '',
+    //   password: '',
+    //   confirmPassword: '',
+    // },
     waiting: false,
     errorMessage: '',
   }),
+  computed: {},
   watch: {
     user: {
       handler() {

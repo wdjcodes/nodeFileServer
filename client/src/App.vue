@@ -15,6 +15,7 @@ export default {
   components: {
     Navigation,
   },
+  computed: {},
   methods: {
     isloggedIn() {
       if (!localStorage.token) {
@@ -58,10 +59,10 @@ export default {
   updated() {
     this.isloggedIn();
   },
-  data: () => ({
-    loggedIn: false,
-    user: {},
-  }),
+  // data: () => ({
+  //   loggedIn: false,
+  //   user: {},
+  // }),
 };
 </script>
 

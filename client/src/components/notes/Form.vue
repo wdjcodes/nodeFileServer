@@ -41,6 +41,7 @@ export default {
       note: '',
     },
   }),
+  computed: {},
   methods: {
     addNote() {
       fetch(API_URL + 'api/v1/notes', {

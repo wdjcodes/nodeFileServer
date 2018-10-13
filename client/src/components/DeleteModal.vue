@@ -54,6 +54,7 @@ export default {
       fired: false,
     };
   },
+  computed: {},
   methods: {
     deleteEntity(){
       EventBus.$emit(this.deleteEvent, true);
