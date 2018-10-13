@@ -18,6 +18,5 @@
 <script>
 export default {
   name: 'home',
-  computed: {},
 };
 </script>

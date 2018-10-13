@@ -15,54 +15,22 @@ export default {
   components: {
     Navigation,
   },
-  computed: {},
   methods: {
-    isloggedIn() {
-      if (!localStorage.token) {
-        this.loggedIn = false;
-        EventBus.$emit('loggedIn', this.loggedIn);
-      } else {
-        fetch(API_URL, {
-          headers: {
-            authorization: `Bearer ${localStorage.token}`,
-          },
-        }).then(res => res.json())
-          .then((result) => {
-            if (result.user) {
-              this.user = result.user;
-              this.loggedIn = true;
-              EventBus.$emit('loggedIn', this.loggedIn);
-              EventBus.$emit('user', this.user);
-            } else {
-              this.logout();
-            }
-          });
-      }
+    checkLogin() {
+      this.isloggedIn().then((auth) => {
+        if(!auth){
+          this.logOutAndRedirect();
+        }
+      });
     },
-    logout() {
-      localStorage.removeItem('token');
-      this.loggedIn = false;
-      this.user = {};
-      EventBus.$emit('loggedIn', this.loggedIn);
-      EventBus.$emit('user', this.user);
+    logOutAndRedirect() {
+      this.logOut();
       this.$router.push('/login');
     },
   },
   created() {
-    this.isloggedIn();
+    this.checkLogin();
   },
-  mounted() {
-    EventBus.$on('forceUpdate', () => {
-      this.isloggedIn();
-    });
-  },
-  updated() {
-    this.isloggedIn();
-  },
-  // data: () => ({
-  //   loggedIn: false,
-  //   user: {},
-  // }),
 };
 </script>
 

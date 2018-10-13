@@ -46,9 +46,7 @@ export default {
     EditNote,
     DeleteModal,
   },
-  computed: {},
   data: () => ({
-    // user: {},
     newNote: {
       title: '',
       note: '',
@@ -57,28 +55,15 @@ export default {
     notes: [],
   }),
   created() {
-    EventBus.$on('loggedIn', (loggedIn) => {
-      this.loggedIn = loggedIn;
-    });
-    EventBus.$on('user', ((user) => {
-      this.user = user;
-    }));
     EventBus.$on('notesUpdate', () => {
       this.showForm = false;
       this.getNotes();
     });
   },
   mounted() {
-    // if (!this.loggedIn) {
-    //   this.$router.push('/login');
-    // }
     this.getNotes();
   },
   methods: {
-    logout() {
-      localStorage.removeItem('token');
-      this.$router.push('/login');
-    },
     getNotes() {
       fetch(`${API_URL}api/v1/notes`, {
         headers: {

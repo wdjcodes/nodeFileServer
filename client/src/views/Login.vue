@@ -18,7 +18,7 @@
       <div class="form-group">
         <label for="username">Username</label>
         <input
-          v-model="user.username"
+          v-model="userInfo.username"
           class="form-control"
           id="username"
           aria-describedby="usernameHelp"
@@ -32,7 +32,7 @@
       <div class="form-group">
         <label for="password">Password</label>
         <input
-          v-model="user.password"
+          v-model="userInfo.password"
           class="form-control"
           id="password"
           aria-describedby="passwordHelp"
@@ -66,15 +66,14 @@ const JoiOptions = {
 export default {
   data: () => ({
     errorMessage: '',
-    // user: {
-    //   username: '',
-    //   password: '',
-    // },
+    userInfo: {
+      username: '',
+      password: '',
+    },
     waiting: false,
   }),
-  computed: {},
   watch: {
-    user: {
+    userInfo: {
       handler() {
         this.errorMessage = '';
       },
@@ -86,8 +85,8 @@ export default {
       this.errorMessage = '';
       if (this.validUser()) {
         const body = {
-          username: this.user.username,
-          password: this.user.password,
+          username: this.userInfo.username,
+          password: this.userInfo.password,
         };
         this.waiting = true;
         fetch(LOGIN_URL, {
@@ -102,7 +101,6 @@ export default {
               return resp.json();
             }
             return resp.json().then((error) => {
-            // console.log(error.message);
               throw new Error(error.message);
             });
           })
@@ -122,7 +120,7 @@ export default {
       }
     },
     validUser() {
-      const result = Joi.validate(this.user, schema, JoiOptions);
+      const result = Joi.validate(this.userInfo, schema, JoiOptions);
       if (result.error === null) {
         return true;
       }

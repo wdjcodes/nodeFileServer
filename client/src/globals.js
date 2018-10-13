@@ -1,29 +1,54 @@
-import store from './store';
+import Store from './store';
 
 var globals = {
   computed: {
     loggedIn: { 
       get () {
-        return store.state.loggedIn;
+        return Store.state.loggedIn;
       },
       set (authenticated) {
-        store.commit('setLoggedIn', authenticated);
+        Store.commit('setLoggedIn', authenticated);
       },
     },
     user: { 
       get () {
-        return store.state.user;
+        return Store.state.user;
       },
       set (user) {
-        store.commit('setUser', user);
+        Store.commit('setUser', user);
       },
     },
-    // loggedIn: function() {
-    //   return true;
-    // },
-    // user: function() {
-    //   return {};
-    // },
+  },
+  methods: {
+    isloggedIn() {
+      const API_URL = 'http://localhost:5000/';
+      if (!localStorage.token) {
+        Store.commit('setLoggedIn', false);
+        Store.commit('setUser', {});
+        return new Promise((resolve) => { resolve(false); });
+      }
+      return fetch(API_URL, {
+        headers: {
+          authorization: `Bearer ${localStorage.token}`,
+        },
+      }).then(res => res.json())
+        .then((result) => {
+          if (result.user) {
+            Store.commit('setLoggedIn', true);
+            Store.commit('setUser', result.user);
+            return true;
+          }
+            localStorage.removeItem(token);
+            Store.commit('setLoggedIn', false);
+            Store.commit('setUser', {});
+            return false;
+        });
+    },
+    logOut(){
+      localStorage.removeItem('token');
+      Store.commit('setLoggedIn', false);
+      Store.commit('setUser', {});
+    },
   },
 }
 

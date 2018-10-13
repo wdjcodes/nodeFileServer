@@ -1,7 +1,6 @@
 <template>
     <div>
         <h1>Sign Up</h1>
-
         <div v-if="waiting" class="row justify-content-center">
           <div class="col-4">
             <img src ="../assets/Infinity-Loading.svg">
@@ -19,7 +18,7 @@
                 <div class="form-group">
                     <label for="username">Username</label>
                     <input
-                        v-model="user.username"
+                        v-model="newUser.username"
                         class="form-control"
                         id="username"
                         aria-describedby="usernameHelp"
@@ -33,7 +32,7 @@
                     <div class="form-group col-md-6">
                     <label for="password">Password</label>
                     <input
-                        v-model="user.password"
+                        v-model="newUser.password"
                         class="form-control"
                         id="password"
                         aria-describedby="passwordHelp"
@@ -48,7 +47,7 @@
                     <div class="form-group col-md-6">
                         <label for="confirmPassword">Confirm Password</label>
                         <input
-                            v-model="user.confirmPassword"
+                            v-model="newUser.confirmPassword"
                             class="form-control"
                             id="confirmPassword"
                             aria-describedby="confirmPasswordHelp"
@@ -81,17 +80,16 @@ const JoiOptions = {
 
 export default {
   data: () => ({
-    // user: {
-    //   username: '',
-    //   password: '',
-    //   confirmPassword: '',
-    // },
+    newUser: {
+      username: '',
+      password: '',
+      confirmPassword: '',
+    },
     waiting: false,
     errorMessage: '',
   }),
-  computed: {},
   watch: {
-    user: {
+    newUser: {
       handler() {
         this.errorMessage = '';
       },
@@ -103,8 +101,8 @@ export default {
       this.errorMessage = '';
       if (this.validUser()) {
         const body = {
-          username: this.user.username,
-          password: this.user.password,
+          username: this.newUser.username,
+          password: this.newUser.password,
         };
         this.waiting = true;
         fetch(SIGNUP_URL, {
@@ -138,11 +136,11 @@ export default {
       }
     },
     validUser() {
-      if (this.user.password !== this.user.confirmPassword) {
+      if (this.newUser.password !== this.newUser.confirmPassword) {
         this.errorMessage = 'Passwords must match 🙈';
         return false;
       }
-      const result = Joi.validate(this.user, schema, JoiOptions);
+      const result = Joi.validate(this.newUser, schema, JoiOptions);
       if (result.error === null) {
         return true;
       }

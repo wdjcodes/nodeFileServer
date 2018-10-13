@@ -64,7 +64,6 @@ export default {
       required: true,
     },
   },
-  computed: {},
   methods: {
     renderMarkDown(note) {
       return md.render(note);

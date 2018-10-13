@@ -29,7 +29,7 @@
           </router-link>
           <button 
             v-if='loggedIn' 
-            @click="logout" 
+            @click="logOutAndRedirect" 
             class="btn btn-secondary">
             Logout
           </button>
@@ -44,35 +44,11 @@ import EventBus from '@/eventbus';
 import { mapState } from 'vuex';
 
 export default {
-  data: () => ({
-    // loggedIn: false,
-    // user: {},
-  }),
-  // computed: {
-  //   ...mapState({
-  //     loggedIn: 'loggedIn',
-  //     user: 'user',
-  //   }),
-  // },
   methods: {
-    logout() {
-      localStorage.removeItem('token');
-      this.loggedIn = false;
-      this.user = {};
-      // this.$store.commit('loggedIn', false);
-      // this.$store.commit('user', {});
-      EventBus.$emit('forceUpdate');
+    logOutAndRedirect() {
+      this.logOut();
       this.$router.push('/');
     },
-  },
-  created() {
-    console.log(this.loggedIn);
-    // EventBus.$on('loggedIn', (loggedIn) => {
-    //   this.loggedIn = loggedIn;
-    // });
-    // EventBus.$on('user', (user) => {
-    //   this.user = user;
-    // });
   },
 };
 </script>
