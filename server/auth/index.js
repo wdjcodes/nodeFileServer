@@ -70,6 +70,7 @@ router.post("/login", (req, res, next) => {
       if(user){
         bcrypt.compare(req.body.password, user.password).then((match) => {
           if(match === true){
+            delete user.password;
             httpUtils.sendUserToken(res, next, user);
           } else {
             httpUtils.sendError(res, next, loginError);

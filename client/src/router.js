@@ -6,27 +6,34 @@ import Signup from './views/Signup.vue';
 import Login from './views/Login.vue';
 import Notes from './views/Notes.vue';
 import Dashboard from './views/Dashboard.vue';
+import Authenticate from './views/Authenticate.vue';
 
 Vue.use(Router);
 
 function loggedinRedirect(to, from, next) {
-  Globals.methods.isloggedIn().then((auth) => {
-    if (auth) {
+  if (from.matched.some(path => path.meta.authenticated)) {
+    if (Globals.computed.loggedIn.get()) {
       next('/dashboard');
     } else {
       next();
     }
-  })
+  } else {
+    Globals.computed.finalTarget.set(to);
+    next('/auth');
+  }
 }
 
 function loggedOutRedirect(to, from, next) {
-  Globals.methods.isloggedIn().then((auth) => {
-    if (auth) {
-        next();
-      } else {
-        next('/login');
-      }
-    })
+  if (from.matched.some(path => path.meta.authenticated)) {
+    if (Globals.computed.loggedIn.get()) {
+      next();
+    } else {
+      next('/login');
+    }
+  } else {
+    Globals.computed.finalTarget.set(to);
+    next('/auth');
+  }
 }
 
 export default new Router({
@@ -41,12 +48,20 @@ export default new Router({
       name: 'signup',
       component: Signup,
       beforeEnter: loggedinRedirect,
+      meta: { authenticated: true },
     },
     {
       path: '/login',
       name: 'login',
       component: Login,
       beforeEnter: loggedinRedirect,
+      meta: { authenticated: true },
+    },
+    {
+      path: '/auth',
+      name: '/auth',
+      component: Authenticate,
+      meta: { authenticated: true },
     },
     {
       path: '/dashboard',

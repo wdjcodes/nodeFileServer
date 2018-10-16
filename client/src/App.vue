@@ -10,14 +10,13 @@ import EventBus from './eventbus';
 
 import Navigation from './components/Navigation.vue';
 
-const API_URL = 'http://localhost:5000/';
 export default {
   components: {
     Navigation,
   },
   methods: {
     checkLogin() {
-      this.isloggedIn().then((auth) => {
+      this.isLoggedIn().then((auth) => {
         if(!auth){
           this.logOutAndRedirect();
         }
@@ -25,7 +24,7 @@ export default {
     },
     logOutAndRedirect() {
       this.logOut();
-      this.$router.push('/login');
+      this.$router.push('/');
     },
   },
   created() {
@@ -36,5 +35,4 @@ export default {
 
 
 <style>
-
 </style>

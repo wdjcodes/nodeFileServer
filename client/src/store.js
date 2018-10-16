@@ -7,13 +7,17 @@ const store = new Vuex.Store({
   state: {
     loggedIn: false,
     user: {},
+    finalTarget: null,
   },
   mutations: {
-    setLoggedIn(state, authenticated){
+    setLoggedIn(state, authenticated) {
       state.loggedIn = authenticated;
     },
-    setUser(state, user){
+    setUser(state, user) {
       state.user = user;
+    },
+    setFinalTarget(state, to) {
+      state.finalTarget = to;
     },
   },
   // actions: {

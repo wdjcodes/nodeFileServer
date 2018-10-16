@@ -1,11 +1,7 @@
 <template>
     <div>
         <h1>Sign Up</h1>
-        <div v-if="waiting" class="row justify-content-center">
-          <div class="col-4">
-            <img src ="../assets/Infinity-Loading.svg">
-          </div>
-        </div>
+        <loading v-if="waiting"></loading>
         <div v-if="errorMessage" class="alert alert-dismissible alert-danger">
             <button
                 type="button"
@@ -64,9 +60,8 @@
 </template>
 
 <script>
-const Joi = require('joi');
-
-const SIGNUP_URL = 'http://localhost:5000/auth/signup';
+import Joi from 'joi';
+import Loading from '@/components/Loading.vue';
 
 const schema = Joi.object().keys({
   username: Joi.string().regex(/^[a-zA-Z0-9_.-]*$/).min(2).max(30)
@@ -96,43 +91,26 @@ export default {
       deep: true,
     },
   },
+  components: {
+    Loading,
+  },
   methods: {
     signup() {
       this.errorMessage = '';
+      this.waiting = true;
       if (this.validUser()) {
-        const body = {
-          username: this.newUser.username,
-          password: this.newUser.password,
-        };
-        this.waiting = true;
-        fetch(SIGNUP_URL, {
-          method: 'POST',
-          body: JSON.stringify(body),
-          headers: {
-            'content-type': 'application/json',
-          },
+        this.signUp(this.newUser.username, this.newUser.password)
+        .then((result) => {
+          setTimeout(() => {
+            this.$router.push('/dashboard');
+          }, this.TRANSITION_DELAY);
         })
-          .then((resp) => {
-            if (resp.ok) {
-              return resp.json();
-            }
-            return resp.json().then((error) => {
-              throw new Error(error.message);
-            });
-          })
-          .then((result) => {
-            localStorage.token = result.token;
-            setTimeout(() => {
-              this.waiting = false;
-              this.$router.push('/dashboard');
-            }, 1000);
-          })
-          .catch((error) => {
-            setTimeout(() => {
-              this.waiting = false;
-              this.errorMessage = error.message;
-            }, 1000);
-          });
+        .catch((error) => {
+          setTimeout(() => {
+            this.waiting = false;
+            this.errorMessage = error.message;
+          }, this.TRANSITION_DELAY);
+        });
       }
     },
     validUser() {
@@ -155,6 +133,11 @@ export default {
       });
       return false;
     },
+  },
+  beforeRouteLeave (to, from, next){
+    this.waiting = false;
+    this.errorMessage = 'A critical client error has ocurred!';
+    next();
   },
 };
 </script>
