@@ -34,5 +34,10 @@ export default {
 </script>
 
 
-<style>
+<style lang="scss">
+$web-font-path: "";
+
+@import "~bootswatch/dist/superhero/variables";
+@import "~bootstrap/scss/bootstrap";
+@import "~bootswatch/dist/superhero/bootswatch";
 </style>
