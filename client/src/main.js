@@ -2,6 +2,7 @@ import Vue from 'vue';
 import jQuery from 'jquery';
 // import 'bootswatch/dist/superhero/bootstrap.css';
 import 'bootstrap/dist/js/bootstrap.bundle';
+import 'vue2-dropzone/dist/vue2Dropzone.min.css';
 import App from './App.vue';
 import router from './router';
 import store from './store';

@@ -12,10 +12,12 @@
                 <h4 class="col-10">{{page.name}}</h4>
               </div>
             </div>
-            <img
-              class="card-img-bottom p-2"
-              :src="page.imgUrl"
-              :alt="page.imgAltText">
+            <div class="d-flex justify-content-center card-img-container">
+              <img
+                class="my-card-img p-2"
+                :src="page.imgUrl"
+                :alt="page.imgAltText">
+            </div>
           </card-link>
       </div>
     </section>
@@ -37,6 +39,12 @@ export default {
           imgUrl: Images.notes,
           imgAltText: 'notes.png',
         },
+        {
+          name: 'FileExplorer',
+          route: '/fileExplorer',
+          imgUrl: Images.search,
+          imgAltText: 'search.png',
+        },
       ],
     };
   },
@@ -47,4 +55,14 @@ export default {
 </script>
 
 <style lang=css>
+.card-img-container {
+  height: 250px;
+  width: 100%;
+  overflow: hidden;
+}
+
+.my-card-img {
+  width: 75%;
+  height: auto;
+}
 </style>

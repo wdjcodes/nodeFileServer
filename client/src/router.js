@@ -7,6 +7,7 @@ import Login from './views/Login.vue';
 import Notes from './views/Notes.vue';
 import Dashboard from './views/Dashboard.vue';
 import Authenticate from './views/Authenticate.vue';
+import FileExplorer from './views/FileExplorer.vue';
 
 Vue.use(Router);
 
@@ -73,6 +74,12 @@ export default new Router({
       path: '/notes',
       name: 'notes',
       component: Notes,
+      beforeEnter: loggedOutRedirect,
+    },
+    {
+      path: '/fileExplorer',
+      name: 'fileExplorer',
+      component: FileExplorer,
       beforeEnter: loggedOutRedirect,
     },
   ],
