@@ -11,16 +11,18 @@ const auth = require('./auth');
 const notes = require('./api/notes');
 
 app.use(volleyball);
-app.use(cors({
-  origin: 'http://localhost:8080',
-}));
+app.use(
+  cors({
+    origin: 'http://localhost:8080',
+  }),
+);
 
 app.use(express.json());
 app.use(mw.checkTokenSetUser);
 
 app.get('/', (req, res) => {
   res.json({
-    message: '🦄🌈✨Hello World! 🌈✨🦄',
+    message: '🌈✨🦄 Hello World! 🦄✨🌈',
     user: req.user,
   });
 });
@@ -30,15 +32,15 @@ app.use('/api/v1/notes', mw.isLoggedIn, notes);
 
 function notFound(req, res, next) {
   res.status(404);
-  const error = new Error('Not Found - ' + req.originalUrl);
+  const error = new Error(`Not Found - ${req.originalUrl}`);
   next(error);
 }
 
-function errorHandler(err, req, res, next) {
+function errorHandler(err, _req, res, _next) {
   res.status(res.statusCode || 500);
   res.json({
     message: err.message,
-    stack: err.stack
+    stack: err.stack,
   });
 }
 

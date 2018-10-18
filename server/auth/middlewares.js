@@ -1,14 +1,14 @@
 const jwt = require('jsonwebtoken');
 
-function checkTokenSetUser(req, res, next){
+function checkTokenSetUser(req, res, next) {
   const authHeader = req.get('authorization');
-  if(authHeader){
+  if (authHeader) {
     // console.log(authHeader);
-    const token = authHeader.split(" ")[1];
-    if(token){
+    const token = authHeader.split(' ')[1];
+    if (token) {
       console.log(token);
-      jwt.verify(token, process.env.TOKEN_SECRET, (error, user) =>{
-        if(error){
+      jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
+        if (error) {
           console.log(error);
         }
 
@@ -23,8 +23,8 @@ function checkTokenSetUser(req, res, next){
   }
 }
 
-function isLoggedIn(req, res, next){
-  if(req.user){
+function isLoggedIn(req, res, next) {
+  if (req.user) {
     next();
   } else {
     const errorMessage = new Error('🙈🙉🙊 Unauthorized 🙈🙉🙊');
@@ -36,4 +36,4 @@ function isLoggedIn(req, res, next){
 module.exports = {
   checkTokenSetUser,
   isLoggedIn,
-}
+};

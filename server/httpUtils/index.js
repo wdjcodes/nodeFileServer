@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+const jwt = require('jsonwebtoken');
 
 function sendError(res, next, errorObj) {
   res.status(errorObj.status);
@@ -15,7 +15,7 @@ function sendUserToken(res, next, user) {
   jwt.sign(
     jwtPayload,
     process.env.TOKEN_SECRET,
-    { expiresIn: "1d" },
+    { expiresIn: '1d' },
     (error, token) => {
       if (error) {
         const jwtError = {
@@ -26,7 +26,7 @@ function sendUserToken(res, next, user) {
       } else {
         res.json({ token, user });
       }
-    }
+    },
   );
 }
 
