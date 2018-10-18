@@ -16,12 +16,12 @@
           <div
             class="dropdown-menu"
             aria-labelledby="noteOptions"
-            x-placement="bottom-start"
-            style="position: absolute; will-change: transform; top: 0px; left: 0px; transform: translate3d(0px, 38px, 0px);">
+            x-placement="bottom-start">
             <button
               @click="registerEvent()"
               type="button"
               class="dropdown-item"
+              disabled=true
               data-toggle="modal"
               data-target="#editNoteModal">
               Edit Note
@@ -48,12 +48,12 @@
 </template>
 
 <script>
-import markDown from 'markdown-it';
-import mdEmoji from 'markdown-it-emoji';
+import MarkDown from 'markdown-it';
+import MdEmoji from 'markdown-it-emoji';
 import EventBus from '@/eventbus';
 
-const md = new markDown();
-md.use(mdEmoji);
+const md = new MarkDown();
+md.use(MdEmoji);
 
 const API_URL = 'http://localhost:5000/';
 
@@ -68,24 +68,23 @@ export default {
     renderMarkDown(note) {
       return md.render(note);
     },
-    readableTime(time){
+    readableTime(time) {
       const d = new Date(time);
       return d.toLocaleString();
     },
-    registerEvent(){
+    registerEvent() {
       EventBus.$emit('launchDelete', this.note._id);
-      EventBus.$once(this.note._id, (del) =>{
-        if(del) {
+      EventBus.$once(this.note._id, (del) => {
+        if (del) {
           this.deleteNote();
-        } else {
         }
       });
     },
-    deleteNote(){
-      const note = this.note;
+    deleteNote() {
+      const note = { ...this.note };
       const data = {
         action: 'delete',
-        note: note,
+        note,
       };
       fetch(`${API_URL}api/v1/notes/manage`, {
         method: 'POST',
@@ -95,14 +94,13 @@ export default {
           authorization: `Bearer ${localStorage.token}`,
         },
       }).then(res => res.json())
-        .then((note) => {
+        .then(() => {
           EventBus.$emit('notesUpdate');
         });
-    }
+    },
   },
 };
 </script>
 
 <style>
-
 </style>

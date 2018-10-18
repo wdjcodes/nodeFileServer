@@ -24,6 +24,7 @@
 
 <script>
 import CardLink from '@/components/CardLink';
+import Images from '@/assets/images.js';
 
 export default {
   data() {
@@ -33,16 +34,16 @@ export default {
         {
           name: 'Notes',
           route: '/notes',
-          imgUrl: require('@/assets/notes.png'),
+          imgUrl: Images.notes,
           imgAltText: 'notes.png',
         },
-      ]
+      ],
     };
   },
   components: {
     CardLink,
   },
-}
+};
 </script>
 
 <style lang=css>

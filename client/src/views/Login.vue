@@ -84,17 +84,17 @@ export default {
       this.waiting = true;
       if (this.validUser()) {
         this.logIn(this.userInfo.username, this.userInfo.password)
-        .then((result) => {
-          setTimeout(() => {
-            this.$router.push('/dashboard');
-          }, this.TRANSITION_DELAY);
-        })
-        .catch((error) => {
-          setTimeout(() => {
-            this.waiting = false;
-            this.errorMessage = error.message;
-          }, this.TRANSITION_DELAY);
-        });
+          .then(() => {
+            setTimeout(() => {
+              this.$router.push('/dashboard');
+            }, this.TRANSITION_DELAY);
+          })
+          .catch((error) => {
+            setTimeout(() => {
+              this.waiting = false;
+              this.errorMessage = error.message;
+            }, this.TRANSITION_DELAY);
+          });
       }
     },
     validUser() {
@@ -114,7 +114,7 @@ export default {
       return false;
     },
   },
-  beforeRouteLeave (to, from, next){
+  beforeRouteLeave(to, from, next) {
     this.waiting = false;
     this.errorMessage = 'A critical client error has ocurred!';
     next();

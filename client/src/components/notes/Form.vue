@@ -43,7 +43,7 @@ export default {
   }),
   methods: {
     addNote() {
-      fetch(API_URL + 'api/v1/notes', {
+      fetch(`${API_URL}api/v1/notes`, {
         method: 'POST',
         body: JSON.stringify(this.newNote),
         headers: {
@@ -51,16 +51,15 @@ export default {
           authorization: `Bearer ${localStorage.token}`,
         },
       }).then(res => res.json())
-        .then((note) => {
+        .then(() => {
           this.newNote.title = '';
           this.newNote.note = '';
           EventBus.$emit('notesUpdate');
         });
     },
   },
-}
+};
 </script>
 
 <style>
-
 </style>

@@ -10,9 +10,9 @@ export default {
     Loading,
   },
   mounted() {
-    if(this.finalTarget.path){
+    if (this.finalTarget.path) {
       this.isLoggedIn()
-        .then((authorized) => {
+        .then(() => {
           setTimeout(() => {
             this.$router.push({
               name: this.finalTarget.name,
@@ -20,7 +20,7 @@ export default {
               query: this.finalTarget.query,
             });
           }, this.TRANSITION_DELAY);
-        })
+        });
     } else {
       this.$router.push('/');
     }

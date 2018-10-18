@@ -48,45 +48,44 @@
 import EventBus from '@/eventbus.js';
 
 export default {
-  data () {
+  data() {
     return {
       deleteEvent: '',
       fired: false,
     };
   },
   methods: {
-    deleteEntity(){
+    deleteEntity() {
       EventBus.$emit(this.deleteEvent, true);
       this.fired = true;
       EventBus.$once('launchDelete', (returnEvent) => {
         this.deleteEvent = returnEvent;
       });
     },
-    cancel(){
+    cancel() {
       EventBus.$emit(this.deleteEvent, false);
       EventBus.$once('launchDelete', (returnEvent) => {
         this.deleteEvent = returnEvent;
       });
-    }
+    },
   },
-  created () {
+  created() {
     EventBus.$once('launchDelete', (returnEvent) => {
       this.deleteEvent = returnEvent;
     });
   },
-  mounted () {
-    $(this.$refs.vuemodal).on("hidden.bs.modal", () => {
-      if(!this.fired){
-        this.cancel
+  mounted() {
+    $(this.$refs.vuemodal).on('hidden.bs.modal', () => {
+      if (!this.fired) {
+        this.cancel();
       }
     });
   },
-  beforeDestroy () {
-    $(this.$refs.vuemodal).off("hidden.bs.modal");
+  beforeDestroy() {
+    $(this.$refs.vuemodal).off('hidden.bs.modal');
   },
-}
+};
 </script>
 
 <style>
-
 </style>

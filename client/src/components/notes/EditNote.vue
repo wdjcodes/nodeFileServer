@@ -1,6 +1,12 @@
 <template>
   <!-- Modal -->
-  <div class="modal fade" id="editNoteModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div
+    class="modal fade"
+    id="editNoteModal"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -24,9 +30,8 @@
 <script>
 export default {
 
-}
+};
 </script>
 
 <style>
-
 </style>

@@ -31,11 +31,11 @@ export default {
     },
   },
   methods: {
-    pushRoute(route){
+    pushRoute(route) {
       this.$router.push(route);
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style>

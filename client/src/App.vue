@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import EventBus from './eventbus';
-
 import Navigation from './components/Navigation.vue';
 
 export default {
@@ -17,7 +15,7 @@ export default {
   methods: {
     checkLogin() {
       this.isLoggedIn().then((auth) => {
-        if(!auth){
+        if (!auth) {
           this.logOutAndRedirect();
         }
       });
