@@ -73,7 +73,7 @@ router.post('/manage', (req, res, next) => {
     user_id: Joi.string().alphanum(),
     create_time: Joi.number().greater(0),
   });
-  console.log(req.body);
+
   if (!req.body.action || !req.body.note || !req.body.note._id || !req.body.note.user_id) {
     httpUtils.sendError(res, next, {
       msg: 'Malformed request',
@@ -82,7 +82,7 @@ router.post('/manage', (req, res, next) => {
     return;
   }
 
-  const action = { ...req.body.action };
+  const action = req.body.action.toString();
   const note = { ...req.body.note };
   const result = Joi.validate(note, localSchema);
   if (note.user_id !== req.user._id) {
