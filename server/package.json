@@ -25,6 +25,8 @@
     "joi": "^13.7.0",
     "jsonwebtoken": "^8.3.0",
     "monk": "^6.0.6",
+    "multer": "^1.4.1",
+    "uuid": "^3.3.2",
     "volleyball": "^1.5.1"
   },
   "eslintConfig": {

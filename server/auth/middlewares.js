@@ -10,6 +10,8 @@ function checkTokenSetUser(req, res, next) {
       jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
         if (error) {
           console.log(error);
+          res.status(401);
+          next(error.errorMessage);
         }
 
         req.user = user;

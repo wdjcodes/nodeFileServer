@@ -1,7 +1,7 @@
 const express = require('express');
 const Joi = require('joi');
 const db = require('../db/connection');
-const httpUtils = require('../httpUtils');
+const httpUtils = require('../utils/httpUtils');
 
 const schema = Joi.object().keys({
   title: Joi.string()

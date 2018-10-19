@@ -9,6 +9,7 @@ const mw = require('./auth/middlewares');
 
 const auth = require('./auth');
 const notes = require('./api/notes');
+const files = require('./api/files');
 
 app.use(volleyball);
 app.use(
@@ -29,6 +30,7 @@ app.get('/', (req, res) => {
 
 app.use('/auth', auth);
 app.use('/api/v1/notes', mw.isLoggedIn, notes);
+app.use('/api/v1/files', mw.isLoggedIn, files);
 
 function notFound(req, res, next) {
   res.status(404);

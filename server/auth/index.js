@@ -2,7 +2,7 @@ const express = require('express');
 const Joi = require('joi');
 const bcrypt = require('bcryptjs');
 const db = require('../db/connection');
-const httpUtils = require('../httpUtils');
+const httpUtils = require('../utils/httpUtils');
 
 const users = db.get('users');
 users.createIndex('username', { unique: true });
