@@ -36,6 +36,8 @@ import NoteCard from '@/components/notes/NoteCard.vue';
 import EditNote from '@/components/notes/EditNote.vue';
 import DeleteModal from '@/components/DeleteModal.vue';
 
+const API_URL = 'http://localhost:5000/';
+
 export default {
   name: 'notes',
   components: {
@@ -63,7 +65,7 @@ export default {
   },
   methods: {
     getNotes() {
-      fetch(`${this.API_URL}api/v1/notes`, {
+      fetch(`${API_URL}api/v1/notes`, {
         headers: {
           authorization: `Bearer ${localStorage.token}`,
         },
