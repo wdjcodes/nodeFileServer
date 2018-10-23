@@ -5,8 +5,10 @@
       ref="vueDropzone"
       id="dropzone"
       :options="dropzoneOptions"
-      v-on:vdropzone-sending="sendingHandler">
+      v-on:vdropzone-sending="sendingHandler"
+      class="bg-secondary border-secondary">
     </vue-dropzone>
+    <pre>{{children}}</pre>
   </section>
 </template>
 
@@ -30,14 +32,30 @@ export default {
           authorization: `Bearer ${localStorage.token}`,
         },
       },
+      path: '/',
+      children: [],
     };
   },
   methods: {
     sendingHandler(file, _xhr, formData) {
       if(file.fullPath){
-        formData.append("fullPath", file.fullPath);
+        const pathNoFile = file.fullPath.replace(/\/[^/]*$/, '/');
+        formData.append('path', this.path + pathNoFile);
+      } else {
+        formData.append('path', this.path);
       }
     }
+  },
+  mounted() {
+    let url = new URL(`${API_URL}api/v1/files`);
+    const params = {path: this.path};
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    fetch(url, {
+      headers: {
+        authorization: `Bearer ${localStorage.token}`,
+      },
+    }).then(res => res.json())
+    .then(children => this.children = children);
   }
 }
 </script>
