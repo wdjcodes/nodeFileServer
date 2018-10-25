@@ -37,6 +37,10 @@
   font-feature-settings: "liga";
 }
 
+.material-icons.icon-size-128 {
+  font-size: 128px;
+}
+
 .material-icons.md-dark {
   @extend .text-secondary;
   opacity: 0.54;

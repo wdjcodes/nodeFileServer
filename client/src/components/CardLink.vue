@@ -8,7 +8,7 @@
       </div>
       <div
         v-if="hover"
-        class="card text-white bg-primary mb-3"
+        class="card text-muted bg-primary mb-3"
         @mouseover="hover = true"
         @mouseout="hover = false"
         @click="pushRoute(route)">

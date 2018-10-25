@@ -3,7 +3,7 @@
     <h1>Dashboard</h1>
     <section class="row mt-3">
       <div
-        class="col-4 mb-3 pr-0 pl-3"
+        class="col-3 mb-3 pr-0 pl-3"
         v-for="page in pages"
         :key="page.route">
           <card-link :route="page.route">
@@ -12,11 +12,8 @@
                 <h4 class="col-10">{{page.name}}</h4>
               </div>
             </div>
-            <div class="d-flex justify-content-center card-img-container">
-              <img
-                class="my-card-img p-2"
-                :src="page.imgUrl"
-                :alt="page.imgAltText">
+            <div class="d-flex flex-row justify-content-center align-items-center">
+              <i class="material-icons icon-size-128">{{page.icon}}</i>
             </div>
           </card-link>
       </div>
@@ -36,12 +33,14 @@ export default {
         {
           name: 'Notes',
           route: '/notes',
+          icon: 'event_note',
           imgUrl: Images.notes,
           imgAltText: 'notes.png',
         },
         {
           name: 'FileExplorer',
           route: '/fileExplorer',
+          icon: 'find_in_page',
           imgUrl: Images.search,
           imgAltText: 'search.png',
         },
