@@ -12,8 +12,10 @@
     "bootswatch": "^4.1.3",
     "joi": "^13.7.0",
     "jquery": "^3.3.1",
+    "lato-font": "^3.0.0",
     "markdown-it": "^8.4.2",
     "markdown-it-emoji": "^1.4.0",
+    "material-design-icons": "^3.0.1",
     "node-sass": "^4.9.4",
     "popper.js": "^1.14.4",
     "sass-loader": "^7.1.0",
@@ -23,10 +25,10 @@
     "vuex": "^3.0.1"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "^3.0.4",
-    "@vue/cli-plugin-eslint": "^3.0.4",
-    "@vue/cli-service": "^3.0.4",
-    "@vue/eslint-config-airbnb": "^3.0.4",
+    "@vue/cli-plugin-babel": "^3.0.5",
+    "@vue/cli-plugin-eslint": "^3.0.5",
+    "@vue/cli-service": "^3.0.5",
+    "@vue/eslint-config-airbnb": "^3.0.5",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {

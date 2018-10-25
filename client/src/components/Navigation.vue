@@ -19,7 +19,9 @@
             v-if='loggedIn'
             to="/dashboard"
             class="navbar-brand">
-            {{user.username}}
+            <div class="d-flex flex-row align-items-center">
+              <i class="material-icons mr-1">face</i>{{user.username}}
+            </div>
           </router-link>
           <router-link
             v-if='!loggedIn'
