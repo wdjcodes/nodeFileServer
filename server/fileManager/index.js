@@ -1,8 +1,9 @@
 const upload = require('./uploadHandler');
-const { insertFileIntoDB, getChildrenOfPath } = require('./filesDBManager');
+const DBManager = require('./filesDBManager');
 
 module.exports = {
   upload,
-  insertFileIntoDB,
-  getChildrenOfPath,
+  ...DBManager,
+  // insertFileIntoDB,
+  // getChildrenOfPath,
 };

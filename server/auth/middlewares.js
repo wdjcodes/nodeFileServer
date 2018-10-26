@@ -6,7 +6,7 @@ function checkTokenSetUser(req, res, next) {
     // console.log(authHeader);
     const token = authHeader.split(' ')[1];
     if (token) {
-      console.log(token);
+      // console.log(token);
       jwt.verify(token, process.env.TOKEN_SECRET, (error, user) => {
         if (error) {
           console.log(error);

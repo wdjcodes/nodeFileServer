@@ -28,10 +28,10 @@ export default {
     pushRoute(route) {
       this.$router.push(route);
     },
-    onMouseOver(){
+    onMouseOver() {
       this.cardClass = ['bg-primary', 'text-muted', 'card-hover'];
     },
-    onMouseOut(){
+    onMouseOut() {
       this.cardClass = ['border-primary'];
     },
   },

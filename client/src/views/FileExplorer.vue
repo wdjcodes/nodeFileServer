@@ -8,6 +8,7 @@
       v-on:vdropzone-sending="sendingHandler"
       class="bg-secondary border-secondary">
     </vue-dropzone>
+    <h5>{{activeDirectoryId}}</h5>
     <pre>{{children}}</pre>
   </section>
 </template>
@@ -34,30 +35,39 @@ export default {
       },
       path: '/',
       children: [],
+      activeDirectoryId: null,
     };
   },
   methods: {
     sendingHandler(file, _xhr, formData) {
-      if(file.fullPath){
+      if (file.fullPath) {
         const pathNoFile = file.fullPath.replace(/\/[^/]*$/, '/');
         formData.append('path', this.path + pathNoFile);
       } else {
         formData.append('path', this.path);
       }
-    }
+      formData.append('activeDirectoryId', this.activeDirectoryId);
+    },
   },
-  mounted() {
-    let url = new URL(`${API_URL}api/v1/files`);
-    const params = {path: this.path};
+  created() {
+    const url = new URL(`${API_URL}api/v1/files`);
+    // const params = { path: this.path };
+    const params = {};
+    if (this.ativeDirectoryId) {
+      params.id = this.ativeDirectoryId;
+    }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
     fetch(url, {
       headers: {
         authorization: `Bearer ${localStorage.token}`,
       },
     }).then(res => res.json())
-    .then(children => this.children = children);
-  }
-}
+      .then((response) => {
+        this.activeDirectoryId = response.parentId;
+        this.children = response.children;
+      });
+  },
+};
 </script>
 
 <style>
