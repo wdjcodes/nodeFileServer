@@ -14,7 +14,7 @@
 * [x] Dashboard
   - [x] Uses cards as links to other pages
   - [x] Cards are setup extensibly
-  - [ ] Redo the cardlink components to use the same html element on hover
+  - [x] Redo the cardlink components to use the same html element on hover
 * [x] Notes
   - [x] Can create notes
   - [x] Shows notes

@@ -1,16 +1,10 @@
 <template>
     <div>
       <div
-        v-if="!hover"
-        @mouseover="hover = true"
-        class="card border-primary mb-3">
-        <slot></slot>
-      </div>
-      <div
-        v-if="hover"
-        class="card text-muted bg-primary mb-3"
-        @mouseover="hover = true"
-        @mouseout="hover = false"
+        class="card mb-3"
+        :class="cardClass"
+        @mouseover="onMouseOver"
+        @mouseout="onMouseOut"
         @click="pushRoute(route)">
         <slot></slot>
       </div>
@@ -21,7 +15,7 @@
 export default {
   data() {
     return {
-      hover: false,
+      cardClass: ['border-primary'],
     };
   },
   props: {
@@ -34,9 +28,18 @@ export default {
     pushRoute(route) {
       this.$router.push(route);
     },
+    onMouseOver(){
+      this.cardClass = ['bg-primary', 'text-muted', 'card-hover'];
+    },
+    onMouseOut(){
+      this.cardClass = ['border-primary'];
+    },
   },
 };
 </script>
 
 <style>
+.card.card-hover {
+  cursor: pointer;
+}
 </style>
