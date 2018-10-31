@@ -112,6 +112,7 @@ export default {
             }, this.TRANSITION_DELAY);
           });
       }
+      this.waiting = false;
     },
     validUser() {
       if (this.newUser.password !== this.newUser.confirmPassword) {

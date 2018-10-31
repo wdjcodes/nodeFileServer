@@ -51,10 +51,9 @@ export default {
   },
   created() {
     const url = new URL(`${API_URL}api/v1/files`);
-    // const params = { path: this.path };
     const params = {};
-    if (this.ativeDirectoryId) {
-      params.id = this.ativeDirectoryId;
+    if (this.activeDirectoryId) {
+      params.id = this.activeDirectoryId;
     }
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
     fetch(url, {

@@ -32,7 +32,6 @@ router.get('/', (req, res) => {
 });
 
 router.post('/signup', (req, res, next) => {
-  console.log('body', req.body);
   const result = Joi.validate(req.body, schema);
   if (result.error === null) {
     users

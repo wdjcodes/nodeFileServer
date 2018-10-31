@@ -8,12 +8,11 @@
   - [x] Returns a list of uploaded files
   - [ ] Will send actual file back to client
   - [ ] Implement file access list
-- [ ] Redo code to insert files into db
+- [x] Redo code to insert files into db
   - [x] Write smaller db access functions
   - [x] db functions should handle edge cases nicely to avoid race cases
-  - [ ] Add schema validation for file and directory objects before inserting
-  - [ ] Cleanup code
-  - [ ] finish testing
+  - [x] Add schema validation for file and directory objects before inserting
+  - [x] Cleanup code
 
 ## Client
 

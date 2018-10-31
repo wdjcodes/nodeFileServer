@@ -49,12 +49,12 @@ function ensureUniqueFilePath(_req, path, name) {
 
 const storage = Multer.diskStorage({
   destination(req, _file, next) {
-    const usrRoootDir = req.user._id;
+    const usrRoootDir = req.user._id.valueOf();
     const uploadDir = process.env.APP_FILE_ROOT + usrRoootDir;
     req.fileName = UUIDv4();
     ensureUniqueFilePath(req, uploadDir, req.fileName)
       .then((path) => {
-        fs.mkdir(path, { mode: 0o660 }, (error) => {
+        fs.mkdir(path, { mode: 0o770 }, (error) => {
           if (error && error.code !== 'EEXIST') {
             next(new Error('Failed to create upload Directory'));
           } else {

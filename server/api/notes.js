@@ -1,5 +1,6 @@
 const express = require('express');
 const Joi = require('joi');
+const { ObjectID } = require('mongodb');
 const db = require('../db/connection');
 const httpUtils = require('../utils/httpUtils');
 
@@ -84,19 +85,21 @@ router.post('/manage', (req, res, next) => {
 
   const action = req.body.action.toString();
   const note = { ...req.body.note };
-  const result = Joi.validate(note, localSchema);
-  if (note.user_id !== req.user._id) {
-    httpUtils.sendError(res, next, {
-      msg: 'Unathorized',
-      status: 401,
-    });
-    return;
-  }
 
+  const result = Joi.validate(note, localSchema);
   if (result.error !== null) {
     httpUtils.sendError(res, next, {
       msg: result.error,
       status: 422,
+    });
+    return;
+  }
+
+  note.user_id = ObjectID(note.user_id);
+  if (!note.user_id.equals(req.user._id)) {
+    httpUtils.sendError(res, next, {
+      msg: 'Unathorized',
+      status: 401,
     });
     return;
   }
@@ -110,7 +113,7 @@ router.post('/manage', (req, res, next) => {
       return;
     }
     if (action === 'delete') {
-      if (dbNote.user_id !== req.user._id) {
+      if (!dbNote.user_id.equals(req.user._id)) {
         httpUtils.sendError(res, next, {
           msg: 'Unauthorized',
           status: 401,

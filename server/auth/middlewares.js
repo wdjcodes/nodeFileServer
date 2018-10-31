@@ -1,4 +1,7 @@
 const jwt = require('jsonwebtoken');
+const db = require('../db/connection');
+
+const users = db.get('users');
 
 function checkTokenSetUser(req, res, next) {
   const authHeader = req.get('authorization');
@@ -13,9 +16,15 @@ function checkTokenSetUser(req, res, next) {
           res.status(401);
           next(error.errorMessage);
         }
-
-        req.user = user;
-        next();
+        users.findOne({ username: user.username }, { password: 0 }).then((storedUser) => {
+          if (storedUser) {
+            req.user = storedUser;
+            next();
+          } else {
+            res.status(401);
+            next(new Error('Unauthorized Access'));
+          }
+        });
       });
     } else {
       next();
