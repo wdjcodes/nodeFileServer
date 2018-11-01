@@ -1,0 +1,32 @@
+.break-out {
+  margin-left: auto calc(50% - 50vw);
+}
+
+.butt-up-x {
+  margin-left: calc(-50%);
+  margin-right: calc(50%);
+  padding: 0px;
+}
+
+.vlb-light {
+  border-right: 1px solid $light;
+  height: 80%;
+  @extend .mx-2;
+  @extend .my-auto;
+}
+
+.vlb-dark {
+  border-right: 1px solid $dark;
+  height: 80%;
+  @extend .mx-2;
+  @extend .my-auto;
+}
+
+//allows children to set heigh as a percentage of parent
+.height-100 {
+  height: 100%;
+}
+
+html {
+  overflow-x: hidden;
+}

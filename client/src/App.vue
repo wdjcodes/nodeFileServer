@@ -39,4 +39,5 @@ $web-font-path: "";
 @import "~bootstrap/scss/bootstrap";
 @import "~bootswatch/dist/superhero/bootswatch";
 @import "./styles/material-design-styles";
+@import "./styles/app";
 </style>

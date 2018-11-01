@@ -39,7 +39,7 @@ export default {
         },
         {
           name: 'FileExplorer',
-          route: '/fileExplorer',
+          route: '/files',
           icon: 'find_in_page',
           imgUrl: Images.search,
           imgAltText: 'search.png',

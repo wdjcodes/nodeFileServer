@@ -7,7 +7,7 @@ import Login from './views/Login.vue';
 import Notes from './views/Notes.vue';
 import Dashboard from './views/Dashboard.vue';
 import Authenticate from './views/Authenticate.vue';
-import FileExplorer from './views/FileExplorer.vue';
+import Files from './views/Files.vue';
 
 Vue.use(Router);
 
@@ -77,9 +77,9 @@ export default new Router({
       beforeEnter: loggedOutRedirect,
     },
     {
-      path: '/fileExplorer',
-      name: 'fileExplorer',
-      component: FileExplorer,
+      path: '/files',
+      name: 'files',
+      component: Files,
       beforeEnter: loggedOutRedirect,
     },
   ],

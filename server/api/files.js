@@ -22,7 +22,10 @@ router.post('/', fm.upload.single('uploads'), async (req, res, next) => {
 
   try {
     let activeDir = await fm.getDirectory(req.user._id, activeId);
-    const pathElements = clientFileInfo.path.split('/').filter(string => string !== '');
+    let pathElements = '';
+    if (clientFileInfo.path) {
+      pathElements = clientFileInfo.path.split('/').filter(string => string !== '');
+    }
     for (let i = 0; i < pathElements.length; i++) {
       const newDir = {
         name: `${pathElements[i]}/`,

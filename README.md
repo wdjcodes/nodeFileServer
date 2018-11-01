@@ -31,12 +31,12 @@
   - [x] Uses dropzone to upload files
   - [x] Asks for files from server when page loads
   - [ ] Graphical file explorer
-    - [ ] Styled pane to hold the file explorer
-    - [ ] Displays folders and files in a heirachical representation
-    - [ ] Clicking on folder sets active folder
+    - [x] Styled pane to hold the file explorer
+    - [x] Displays folders and files in a heirachical representation
+    - [x] Clicking on folder sets active folder
     - [ ] Allow creation of folders
     - [ ] Allow for folders and files to be moved
-    - [ ] Allow uploads to active folder
+    - [x] Allow uploads to active folder
 - [x] Styling
   - [x] Setup bootstrap and bootswatch
   - [x] Host necessary webfonts for themes

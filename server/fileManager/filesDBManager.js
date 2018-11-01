@@ -1,4 +1,5 @@
 const Joi = require('joi');
+const { ObjectID } = require('mongodb');
 
 const Schemas = require('./schemas');
 const db = require('../db/connection');
@@ -22,20 +23,21 @@ directories.createIndex(
   { unique: true },
 );
 
-async function getChildren(userId, dirId) {
-  const subDirs = await directories.find(
-    { owner_id: userId, parent_id: dirId },
-    { name: 1, type: 1 },
-  );
-  const subFiles = await files.find({ owner_id: userId, parent_id: dirId }, { name: 1, type: 1 });
+async function getChildren(userID, dirID) {
+  const dID = ObjectID(dirID);
+  const uID = ObjectID(userID);
+
+  const subDirs = await directories.find({ owner_id: uID, parent_id: dID }, { name: 1, type: 1 });
+  const subFiles = await files.find({ owner_id: uID, parent_id: dID }, { name: 1, type: 1 });
   return subDirs.concat(subFiles);
 }
 
-async function getDirectory(userId, dirId) {
-  console.log(dirId);
-  console.log(dirId.valueOf());
-  const dir = await directories.findOne({ _id: dirId });
-  if (dir && !dir.owner_id.equals(userId)) {
+async function getDirectory(userID, dirID) {
+  const dID = ObjectID(dirID);
+  const uID = ObjectID(userID);
+
+  const dir = await directories.findOne({ _id: dID });
+  if (dir && !dir.owner_id.equals(uID)) {
     throw new Error('Unauthorized file access.');
   }
 
@@ -43,7 +45,6 @@ async function getDirectory(userId, dirId) {
 }
 
 async function createFile(file) {
-  console.log(file.local_path);
   const validate = Joi.validate(file, Schemas.mongoFileSchema);
   if (validate.error) {
     throw new Error(validate.error.message);
